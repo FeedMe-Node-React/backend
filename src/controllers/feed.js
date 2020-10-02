@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 exports.getPosts = (req, res, next) => {
   Post.find().then(result => {
@@ -15,21 +16,34 @@ exports.createPost = (req, res, next) => {
   const title = req.body.title;
   const content = req.body.content;
   const imageUrl = req.body.imageUrl;
+  const userId = req.body.userId;
+  let creator;
   const post = new Post({
     title: title,
     content: content,
     imageUrl: imageUrl,
-    creator: { name: "Phil " },
+    creator: userId,
   });
   post
     .save()
     .then(result => {
-      console.log(result)
+      return User.findById(userId)
+    })
+    .then(user => {
+      creator = user;
+      user.posts.push(post);
+      return user.save();
+    })
+    .then(result => {
       res
         .status(201)
         .json({
           message: 'Post created successfully!',
-          post: result
+          post: result,
+          creator: {
+            _id: creator._id,
+            name: creator.name
+          }
         })
     })
     .catch(err => {
@@ -80,6 +94,6 @@ exports.deletePost = (req, res, next) => {
     .then(result => {
       res
         .status(200)
-        // .json({post: result})
+        .json({post: result})
     })
 };
