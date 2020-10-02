@@ -3,10 +3,11 @@ const bodyParser = require('body-parser');
 
 const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
-require('./utils/dbConnect')
+require('./utils/dbConnect');
 
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(bodyParser.json()); // application/json
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 
 app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 
-console.log("API listening on port: 8080")
+console.log("API listening on port: 8080");
 app.listen(8080);
