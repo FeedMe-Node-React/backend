@@ -18,12 +18,13 @@ exports.updateUser = (req, res, next) => {
     const newStatus = req.body.status
     User.findByIdAndUpdate(userId)
         .then(result => {
+            result.save()
             result.status = newStatus
             console.log(result)
             res
-                .status(200)
-                .json({
-                    status: newStatus
-                })
+            .status(200)
+            .json({
+                status: newStatus
+            })
         })
 }
