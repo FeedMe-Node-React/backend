@@ -2,7 +2,7 @@ const User = require('../models/user');
 
 exports.getUser = (req, res, next) => {
     const userId = req.body.userId
-    const user = User.findById(userId)
+    User.findById(userId)
         .then(result => {
             console.log(result)
             res
@@ -16,7 +16,7 @@ exports.getUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     const userId = req.body.userId
     const newStatus = req.body.status
-    const user = User.findByIdAndUpdate(userId)
+    User.findByIdAndUpdate(userId)
         .then(result => {
             result.status = newStatus
             console.log(result)
