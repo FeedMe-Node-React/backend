@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 // const bcrypt = require('bcryptjs')
 const User = require('../models/user');
 
@@ -16,21 +17,30 @@ exports.userSignup = (req, res, next) => {
             console.log(result)
             res
                 .status(201)
-                .json(result);
+                .json({
+                    message: "User created!",
+                    data: result
+                });
         });
 };
 
 exports.userLogin = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const email = req.body.email
+    const password = req.body.password
     User
-        .find({email})
+        .findOne({email})
         .then(result => {
-            if(result[0].password == password) {
-                res
-                    .status(200)
-                    .json(result);
-            };
+            if(result.password == password) {
+            res
+                .status(201)
+                .json({
+                    message: 'User logged in.',
+                    data: result._id,
+                    token: result._id
+                })
+            } else {
+                res.status(403)
+            }
         })
         .catch(err => {
             console.log(err);
