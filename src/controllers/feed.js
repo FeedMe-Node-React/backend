@@ -95,9 +95,17 @@ exports.deletePost = (req, res, next) => {
   Post
     .findByIdAndDelete(postId)
     .then(result => {
+      return User.find(req.userId)
+    })
+    .then(user => {
+      user[0].posts.pull(postId);
+      console.log(user[0].posts)
+      return user[0].save();
+    })
+    .then(result => {
       res
         .status(200)
-        .json({post: result});
+        .json({post: result})
     })
     .catch(err => {
       console.log(err);
