@@ -68,7 +68,7 @@ exports.getPost = (req, res, next) => {
     .catch(err => {
       console.log(err);
     });
-  }
+  };
     
 exports.editPost = (req, res, next) => {
   const postId = req.params.postId;
@@ -91,13 +91,13 @@ exports.editPost = (req, res, next) => {
 
 exports.deletePost = (req, res, next) => {
   const postId = req.params.postId;
-  console.log(postId)
+  console.log(postId);
   Post
     .findByIdAndDelete(postId)
     .then(result => {
       res
         .status(200)
-        .json({post: result})
+        .json({post: result});
     })
     .catch(err => {
       console.log(err);
