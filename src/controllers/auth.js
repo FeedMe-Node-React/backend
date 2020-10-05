@@ -10,37 +10,40 @@ exports.userSignup = (req, res, next) => {
         email: email,
         password: password,
         name: name
-    })
+    });
     user
         .save()
         .then(result => {
-            console.log(result)
+            console.log(result);
             res
                 .status(201)
                 .json({
                     message: "User created!",
                     data: result
                 });
+        })
+        .catch(err => {
+            console.log(err);
         });
 };
 
 exports.userLogin = (req, res, next) => {
-    const email = req.body.email
-    const password = req.body.password
+    const email = req.body.email;
+    const password = req.body.password;
     User
         .findOne({email})
         .then(result => {
-            if(result.password == password) {
+            if(result.password === password) {
             res
                 .status(201)
                 .json({
                     message: 'User logged in.',
                     data: result._id,
                     token: result._id
-                })
+                });
             } else {
-                res.status(403)
-            }
+                res.status(403);
+            };
         })
         .catch(err => {
             console.log(err);

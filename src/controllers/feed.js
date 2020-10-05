@@ -8,8 +8,8 @@ exports.getPosts = (req, res, next) => {
       .json({
         message: "Posts successfully fetched",
         posts: result
-      })
-  })
+      });
+  });
 };
 
 exports.createPost = (req, res, next) => {
@@ -17,17 +17,20 @@ exports.createPost = (req, res, next) => {
   const content = req.body.content;
   const imageUrl = req.body.imageUrl;
   const userId = req.body.userId;
-  let creator;
+
   const post = new Post({
     title: title,
     content: content,
     imageUrl: imageUrl,
     creator: userId,
   });
+
+  let creator;
+
   post
     .save()
     .then(result => {
-      return User.findById(userId)
+      return User.findById(userId);
     })
     .then(user => {
       creator = user;
@@ -44,10 +47,10 @@ exports.createPost = (req, res, next) => {
             _id: creator._id,
             name: creator.name
           }
-        })
+        });
     })
     .catch(err => {
-      console.log(err)
+      console.log(err);
     });
   };
   
@@ -60,10 +63,10 @@ exports.getPost = (req, res, next) => {
         .status(200)
         .json({
           post: result
-        })
+        });
     })
     .catch(err => {
-      console.log(err)
+      console.log(err);
     });
   }
     
@@ -72,17 +75,17 @@ exports.editPost = (req, res, next) => {
   Post
   .findByIdAndUpdate(postId)
   .then(result => {
-    result.title = req.body.title
-    result.content = req.body.content
-    result.save()
+    result.title = req.body.title;
+    result.content = req.body.content;
+    result.save();
     res
       .status(200)
       .json({
         post: result
-      })
+      });
   })
   .catch(err => {
-    console.log(err)
+    console.log(err);
   });
 };
 
@@ -96,4 +99,7 @@ exports.deletePost = (req, res, next) => {
         .status(200)
         .json({post: result})
     })
+    .catch(err => {
+      console.log(err);
+    });
 };

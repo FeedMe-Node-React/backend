@@ -22,9 +22,9 @@ exports.updateUser = (req, res, next) => {
             result.status = newStatus
             console.log(result)
             res
-            .status(200)
-            .json({
-                status: newStatus
-            })
+                .status(200)
+                .json({
+                    status: newStatus
+                })
         })
 }
