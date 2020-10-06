@@ -22,8 +22,7 @@ const PostSchema = new Schema(
         },
         imageUrl: {
             type: String,
-            default: '',
-            required: false,
+            required: true,
         },
     },
     { 
