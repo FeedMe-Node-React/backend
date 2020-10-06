@@ -15,7 +15,7 @@ exports.getPosts = (req, res, next) => {
 exports.createPost = (req, res, next) => {
   const title = req.body.title;
   const content = req.body.content;
-  const imageUrl = req.body.imageUrl;
+  const imageUrl = req.file.path;
   const userId = req.body.userId;
 
   const post = new Post({
@@ -77,6 +77,7 @@ exports.editPost = (req, res, next) => {
   .then(result => {
     result.title = req.body.title;
     result.content = req.body.content;
+    result.imageUrl = req.body.imageUrl;
     result.save();
     res
       .status(200)
@@ -95,9 +96,17 @@ exports.deletePost = (req, res, next) => {
   Post
     .findByIdAndDelete(postId)
     .then(result => {
+      return User.find(req.userId)
+    })
+    .then(user => {
+      user[0].posts.pull(postId);
+      console.log(user[0].posts)
+      return user[0].save();
+    })
+    .then(result => {
       res
         .status(200)
-        .json({post: result});
+        .json({post: result})
     })
     .catch(err => {
       console.log(err);
