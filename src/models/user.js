@@ -19,10 +19,6 @@ const UserSchema = new Schema (
             type: String,
             default: "I'm a new member!"
         },
-        posts: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Post',
-        }],
     },
     { timestamps: true },
 );
