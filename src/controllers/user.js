@@ -1,29 +1,31 @@
 const User = require('../models/user');
 
-exports.getUser = (req, res, next) => {
-    const userId = req.body.userId
-    User.findById(userId)
-        .then(result => {
-            res
-                .status(200)
-                .json({
-                    status: result.status
-                })
-        })
+exports.getUser = async (req, res, next) => {
+    try {
+        const userId = req.body.userId;
+        const user = await User.findById(userId);
+        res.status(200).json({ 
+            status: user.status 
+        });
+    } catch(error) {
+        res.status(500);
+        console.log(error);
+    }
 };
 
-exports.updateUser = (req, res, next) => {
-    const userId = req.body.userId
-    const newStatus = req.body.status
-    User.findByIdAndUpdate(userId)
-        .then(result => {
-            result.status = newStatus
-            result.save()
-            console.log(result)
-            res
-                .status(200)
-                .json({
-                    status: newStatus
-                })
-        })
-}
+exports.updateUser = async (req, res, next) => {
+    try {
+        const userId = req.body.userId;
+        const newStatus = req.body.status;
+        const user = await User.findByIdAndUpdate(userId);
+        user.status = newStatus;
+        user.save();
+        console.log(user)
+        res.status(200).json({ 
+            status: user.status
+        });
+    } catch(error) {
+        res.status(500);
+        console.log(error);
+    }
+};
