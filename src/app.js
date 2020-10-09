@@ -54,5 +54,9 @@ app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 
-console.log("API listening on port: 8080");
-app.listen(8080);
+const server = app.listen(8080);
+const io = require('socket.io')(server);
+
+io.on('connection', socket => {
+    console.log("Listening on port: 8080");
+})
