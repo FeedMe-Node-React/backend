@@ -1,6 +1,5 @@
 const Post = require('../models/post');
-const { deleteOne } = require('../models/user');
-const User = require('../models/user');
+const io = require('../utils/openSocket');
 
 exports.getPosts = async (req, res, next) => {
   try {
@@ -24,7 +23,12 @@ exports.createPost = async (req, res, next) => {
       imageUrl: imageUrl,
       user: userId,
     });
-    res.json(post);
+    io.init()
+    io.getIo().emit('posts', {
+      action: 'create',
+      post: post
+    });    
+    res.status(201).json(post);
   } catch(error) {
     res.status(500);
     console.log(error);
@@ -61,17 +65,15 @@ exports.deletePost = async (req, res, next) => {
   try {
     const userId = res.userId;
     const postId = req.params.postId;
-    const post = await Post.deleteOne({ 
-      _id: postId, 
-      user: userId 
-    })
-    if(!post) {
-      res.status(200).json(post)
-    } else {
-
-    }
+    const post = await Post.findOneAndDelete({ 
+      user: userId, 
+      _id: postId
+    });
+    if(post) {
+      res.status(200).json(post);
+    };
+    next();
   } catch(error) {
-    res.status(403)
-    console.log(error);
-  };
+    res.status(403).json(error)
+  }
 };
