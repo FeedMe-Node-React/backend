@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const { deleteOne } = require('../models/user');
 const User = require('../models/user');
 
 exports.getPosts = async (req, res, next) => {
@@ -8,8 +9,8 @@ exports.getPosts = async (req, res, next) => {
   } catch(error) {
     res.status(500);
     console.log(error);
-  }
-}
+  };
+};
 
 exports.createPost = async (req, res, next) => {
   try {
@@ -27,8 +28,8 @@ exports.createPost = async (req, res, next) => {
   } catch(error) {
     res.status(500);
     console.log(error);
-  }
-}
+  };
+};
   
 exports.getPost = async (req, res, next) => {
   try {
@@ -38,7 +39,7 @@ exports.getPost = async (req, res, next) => {
   } catch(error) {
     res.status(500)
     console.log(error);
-  }
+  };
 };
     
 exports.editPost = async (req, res, next) => {
@@ -47,23 +48,30 @@ exports.editPost = async (req, res, next) => {
     const post = await Post.findByIdAndUpdate(postId)
     post.title = req.body.title;
     post.content = req.body.content;
-    post.imageUrl = req.body.imageUrl;
+    post.imageUrl = post.imageUrl
     post.save();
     res.status(200).json(post);
   } catch(error) {
     res.status(500)
     console.log(error);
-  }
+  };
 };
   
 exports.deletePost = async (req, res, next) => {
   try {
+    const userId = res.userId;
     const postId = req.params.postId;
-    const post = await Post.findByIdAndDelete(postId);
-    console.log(postId)
-    res.status(200).json(post)
+    const post = await Post.deleteOne({ 
+      _id: postId, 
+      user: userId 
+    })
+    if(!post) {
+      res.status(200).json(post)
+    } else {
+
+    }
   } catch(error) {
-    res.status(500)
+    res.status(403)
     console.log(error);
-  }
+  };
 };
