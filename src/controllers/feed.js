@@ -4,6 +4,7 @@ const io = require('../utils/openSocket');
 exports.getPosts = async (req, res, next) => {
   try {
     const posts = await Post.find();
+    console.log(posts)
     res.status(200).json(posts); 
   } catch(error) {
     res.status(500);
@@ -15,12 +16,12 @@ exports.createPost = async (req, res, next) => {
   try {
     const title = req.body.title;
     const content = req.body.content;
-    const imageUrl = req.file.path;
+    const image = req.file.path;
     const userId = req.body.userId;
     const post = await Post.create({
       title: title,
       content: content,
-      imageUrl: imageUrl,
+      image: image,
       user: userId,
     });
     io.init()
@@ -52,7 +53,7 @@ exports.editPost = async (req, res, next) => {
     const post = await Post.findByIdAndUpdate(postId)
     post.title = req.body.title;
     post.content = req.body.content;
-    post.imageUrl = post.imageUrl
+    post.image = post.image
     post.save();
     res.status(200).json(post);
   } catch(error) {
