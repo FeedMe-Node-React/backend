@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const express = require('express');
 
+const app = express()
 dotenv.config();
 
 const MongoConnect = async (error) => {
@@ -10,6 +12,14 @@ const MongoConnect = async (error) => {
             useNewUrlParser: true, 
             useCreateIndex: true 
         });
+
+        const server = app.listen(8080);
+        const io = require('./openSocket').init(server);
+
+        io.on('connection', socket => {
+            console.log("Listening on port: 8080");
+        })
+
         console.log("DB Connected")
     } catch (error) {
         console.log(error);
