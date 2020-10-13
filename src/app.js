@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path')
 const express = require('express');
+const mongoose = require('mongoose')
 
 const app = express();
 
@@ -9,7 +10,29 @@ const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 
-require('./utils/dbConnect');
+// require('./utils/dbConnect');
+const MongoConnect = async (error) => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, { 
+            useUnifiedTopology: true, 
+            useNewUrlParser: true, 
+            useCreateIndex: true 
+        });
+
+        const server = app.listen(8080);
+        const io = require('./utils/openSocket').init(server);
+
+        io.on('connection', socket => {
+            console.log("Listening on port: 8080");
+        })
+
+        console.log("DB Connected")
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+MongoConnect();
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -53,10 +76,3 @@ app.use((req, res, next) => {
 app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
-
-const server = app.listen(8080);
-const io = require('socket.io')(server);
-
-io.on('connection', socket => {
-    console.log("Listening on port: 8080");
-})
