@@ -24,11 +24,11 @@ exports.createPost = async (req, res, next) => {
       image: image,
       user: userId,
     });
-    io.init()
+    io.init();
     io.getIo().emit('posts', {
       action: 'create',
       post: post
-    });    
+    });
     res.status(201).json(post);
   } catch(error) {
     res.status(500);
