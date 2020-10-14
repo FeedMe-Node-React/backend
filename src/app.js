@@ -18,20 +18,16 @@ const MongoConnect = async (error) => {
             useNewUrlParser: true, 
             useCreateIndex: true 
         });
-
         const server = app.listen(8080);
         const io = require('./utils/openSocket').init(server);
-
-        io.on('connection', socket => {
-            console.log("Listening on port: 8080");
+        io.on('connect', socket => {
+            console.log('Socket: ' + socket.conn.readyState.toUpperCase())
         })
-
-        console.log("DB Connected")
+        console.log('DB Connected | Listening on port:8080')
     } catch (error) {
         console.log(error);
     }
 };
-
 MongoConnect();
 
 const fileStorage = multer.diskStorage({
@@ -42,7 +38,7 @@ const fileStorage = multer.diskStorage({
         cb(null, new Date().toISOString() + '-' + file.originalname);
     }
 });
-  
+
 const fileFilter = (req, file, cb) => {
     if (
         file.mimetype === 'image/png' ||
@@ -55,13 +51,13 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-app.use(bodyParser.json()); // application/json
-
 app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
-  );
-
+);
+    
 app.use('/src/images', express.static(path.join(__dirname, 'images')));
+    
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

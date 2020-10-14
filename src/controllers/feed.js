@@ -4,7 +4,11 @@ const io = require('../utils/openSocket');
 exports.getPosts = async (req, res, next) => {
   try {
     const posts = await Post.find();
-    console.log(posts)
+    io.init();
+    io.getIo().emit('posts', {
+      action: 'connect',
+      posts: posts
+    });
     res.status(200).json(posts); 
   } catch(error) {
     res.status(500);
@@ -26,9 +30,10 @@ exports.createPost = async (req, res, next) => {
     });
     io.init();
     io.getIo().emit('posts', {
-      action: 'create',
+      action: 'get',
       post: post
     });
+    console.log(post)
     res.status(201).json(post);
   } catch(error) {
     res.status(500);
