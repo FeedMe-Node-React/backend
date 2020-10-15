@@ -6,7 +6,7 @@ exports.getPosts = async (req, res, next) => {
     const posts = await Post.find().sort({createdAt: -1});
     io.init();
     io.getIo().emit('posts', {
-      action: 'connect',
+      action: 'index',
       posts: posts
     });
     res.status(200).json(posts); 
@@ -30,10 +30,9 @@ exports.createPost = async (req, res, next) => {
     });
     io.init();
     io.getIo().emit('posts', {
-      action: 'get',
+      action: 'create',
       post: post
     });
-    console.log(post)
     res.status(201).json(post);
   } catch(error) {
     res.status(500);
@@ -47,7 +46,7 @@ exports.getPost = async (req, res, next) => {
     const post = await Post.findById(postId);
     res.status(200).json(post);
   } catch(error) {
-    res.status(500)
+    res.status(500);
     console.log(error);
   };
 };
@@ -76,10 +75,17 @@ exports.deletePost = async (req, res, next) => {
       _id: postId
     });
     if(post) {
+      io.init();
+      io.getIo().emit('posts', {
+        action: 'delete',
+        post: post
+      });
       res.status(200).json(post);
+    } else {
+      res.status(403).json();
     };
     next();
   } catch(error) {
-    res.status(403).json(error)
+    res.status(500).json(error)
   }
 };
