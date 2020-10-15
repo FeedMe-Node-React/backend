@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
 const userController = require('../controllers/user');
+const jwtAuth = require('../utils/jwtAuth');
 
-router.post('/:userId', userController.getUser);
-router.patch('/:userId', userController.updateUser);
+router.get('/dashboard', jwtAuth, userController.getDashboard);
+
+router.post('/:userId', userController.getStatus);
+router.patch('/:userId', userController.updateStatus);
 
 module.exports = router;

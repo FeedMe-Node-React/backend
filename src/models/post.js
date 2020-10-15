@@ -23,7 +23,7 @@ const PostSchema = new Schema(
             default: new Date().toISOString(),
             required: true,
         },
-        imageUrl: {
+        image: {
             type: String,
             required: true,
         },
