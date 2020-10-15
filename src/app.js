@@ -9,8 +9,8 @@ const app = express();
 const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
-
 // require('./utils/dbConnect');
+
 const MongoConnect = async (error) => {
     try {
         await mongoose.connect(process.env.MONGODB_URI, { 
@@ -20,10 +20,9 @@ const MongoConnect = async (error) => {
         });
         const server = app.listen(8080);
         const io = require('./utils/openSocket').init(server);
-        io.on('connect', socket => {
-            console.log('Socket: ' + socket.conn.readyState.toUpperCase())
+        io.on('connection', socket => {
+            console.log('Server listening on port:8080')
         })
-        console.log('DB Connected | Listening on port:8080')
     } catch (error) {
         console.log(error);
     }
