@@ -1,16 +1,16 @@
-const bodyParser = require('body-parser');
-const multer = require('multer');
-const path = require('path')
-const express = require('express');
-const mongoose = require('mongoose')
+import bodyParser from 'body-parser';
+import multer from 'multer';
+import path from 'path'
+import express from 'express';
+import mongoose from 'mongoose';
 
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
 
-const feedRoutes = require('./routes/feed');
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
+import feedRoutes from './routes/feed';
+import authRoutes from './routes/auth';
+import userRoutes from './routes/user';
 // require('./utils/dbConnect');
 
 const MongoConnect = async (error) => {
@@ -21,7 +21,7 @@ const MongoConnect = async (error) => {
             useCreateIndex: true 
         });
         const server = app.listen(8080);
-        const io = require('./utils/openSocket').init(server);
+        import io from ('./utils/openSocket').init(server);
         io.on('connection', socket => {
             
         })

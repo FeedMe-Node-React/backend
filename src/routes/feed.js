@@ -1,9 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const feedController = require('../controllers/feed');
-const jwtAuth = require('../utils/jwtAuth')
-
+import feedController from '../controllers/feed';
+import jwtAuth from '../utils/jwtAuth';
 
 // GET /feed/posts
 router.get('/posts', jwtAuth, feedController.getPosts);

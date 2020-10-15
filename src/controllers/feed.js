@@ -1,5 +1,5 @@
-const Post = require('../models/post');
-const io = require('../utils/openSocket');
+import Post from '../models/post';
+import io from '../utils/openSocket';
 
 exports.getPosts = async (req, res, next) => {
   try {

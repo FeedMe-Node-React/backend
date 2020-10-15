@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const userController = require('../controllers/user');
-const jwtAuth = require('../utils/jwtAuth');
+import userController from '../controllers/user';
+import jwtAuth from '../utils/jwtAuth';
 
 router.get('/dashboard', jwtAuth, userController.getDashboard);
 

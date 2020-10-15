@@ -1,7 +1,6 @@
-const { json } = require('body-parser');
 // const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+import jwt from 'jsonwebtoken'
+import User from '../models/user'
 
 exports.userSignup = async (req, res, next) => {
     try{

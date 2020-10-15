@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const Post = require('../models/post');
+import User from '../models/user';
+import Post from '../models/post';
 
 exports.getDashboard = async (req, res, next) => {
     try {

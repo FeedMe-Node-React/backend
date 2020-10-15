@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const autopopulate = require('mongoose-autopopulate')
+import mongoose from 'mongoose';
+import autopopulate from 'mongoose-autopopulate';
 
 const Schema = mongoose.Schema;
 
