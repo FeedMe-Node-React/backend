@@ -20,7 +20,7 @@ const MongoConnect = async (error) => {
             useNewUrlParser: true, 
             useCreateIndex: true 
         });
-        const server = app.listen(process.env.HEROKU_URI);
+        const server = app.listen(8080);
         const io = require('./utils/openSocket').init(server);
         io.on('connection', socket => {
             

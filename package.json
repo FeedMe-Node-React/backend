@@ -1,18 +1,15 @@
 {
-  "name": "nodejs-complete-guide",
+  "name": "feed-me",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Feed Application using Node, Express, React, JWT, Socket.io, Multer, and More!",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "development": "nodemon src/app.js",
     "start": "node src/app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/udemy-course-nodejs-complete"
-  },
-  "author": "",
+  "repository": "https://github.com/FeedMe-Node-React/backend",
+  "author": "Phil DeLong <philjdelong@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
