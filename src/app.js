@@ -4,6 +4,8 @@ const path = require('path')
 const express = require('express');
 const mongoose = require('mongoose')
 
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
 
 const feedRoutes = require('./routes/feed');
@@ -18,10 +20,10 @@ const MongoConnect = async (error) => {
             useNewUrlParser: true, 
             useCreateIndex: true 
         });
-        const server = app.listen(8080);
+        const server = app.listen(process.env.HEROKU_URI);
         const io = require('./utils/openSocket').init(server);
         io.on('connection', socket => {
-            console.log('Server listening on port:8080')
+            
         })
     } catch (error) {
         console.log(error);
