@@ -8,8 +8,6 @@ import feedRoutes from './routes/feed';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import socket from './utils/openSocket';
-// import './utils/dbConnect';
-// import './utils/imageUploader';
 
 dotenv.config();
 const app = express();
@@ -24,7 +22,6 @@ const initialize = async (server) => {
         console.log('Mongo Connected')
 
         const io = socket.init(server);
-        console.log(io);
         io.on('connection', socket => {
             console.log('Client Connected')
         })
@@ -70,6 +67,6 @@ app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 
-const server = app.listen(8080);
+const server = app.listen(process.env.PORT || 8080);
 
 initialize(server);
