@@ -7,31 +7,31 @@ import dotenv from 'dotenv';
 import feedRoutes from './routes/feed';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
-// import io from './utils/openSocket';
+import socket from './utils/openSocket';
 // import './utils/dbConnect';
 // import './utils/imageUploader';
 
 dotenv.config();
 const app = express();
 
-const MongoConnect = async (error) => {
+const initialize = async (server) => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, { 
-            useUnifiedTopology: true, 
-            useNewUrlParser: true, 
-            useCreateIndex: true 
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+            useCreateIndex: true
         });
-        console.log('DB Connected')
-        // const server = app.listen(8080 || process.env.HEROKU_URI);
-        // io.init(server);
-        // io.on('connection', socket => {
-            // console.log('DB Connected')
-        // })
+        console.log('Mongo Connected')
+
+        const io = socket.init(server);
+        console.log(io);
+        io.on('connection', socket => {
+            console.log('Client Connected')
+        })
     } catch (error) {
         console.log(error);
     }
 };
-MongoConnect();
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -63,11 +63,13 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));    
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('/dist/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 
-app.listen(8080);
+const server = app.listen(8080);
+
+initialize(server);

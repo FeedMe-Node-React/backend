@@ -1,16 +1,17 @@
 import Post from '../models/post';
-// import io from '../utils/openSocket';
+import socket from '../utils/openSocket';
 
 exports.getPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find().sort({createdAt: -1});
+    const posts = await Post.find().sort({ createdAt: -1 });
     res.status(200).json(posts);
-    // io.init();
-    // io.getIo().emit('posts', {
+
+    // io.emit('posts', {
     //   action: 'index',
     //   posts: posts
     // });
-  } catch(error) {
+
+  } catch (error) {
     res.status(500);
     console.log(error);
   };
@@ -18,39 +19,52 @@ exports.getPosts = async (req, res, next) => {
 
 exports.createPost = async (req, res, next) => {
   try {
-    const title = req.body.title;
-    const content = req.body.content;
-    const image = req.file.path;
-    const userId = req.body.userId;
+    const { body, file } = req;
+
+    const {
+      content,
+      title,
+      userId: user,
+    } = body;
+
+    const {
+      path: image
+    } = file
+
     const post = await Post.create({
-      title: title,
-      content: content,
-      image: image,
-      user: userId,
+      title,
+      content,
+      image,
+      user,
     });
+
+    console.log(post);
+
+    const io = socket.getIo();
+
+    io.emit('posts', {
+      action: 'create',
+      post,
+    });
+
     res.status(201).json(post);
-    // io.init();
-    // io.getIo().emit('posts', {
-    //   action: 'create',
-    //   post: post
-    // });
-  } catch(error) {
+  } catch (error) {
     res.status(500);
     console.log(error);
   };
 };
-  
+
 exports.getPost = async (req, res, next) => {
   try {
     const postId = req.params.postId;
     const post = await Post.findById(postId);
     res.status(200).json(post);
-  } catch(error) {
+  } catch (error) {
     res.status(500);
     console.log(error);
   };
 };
-    
+
 exports.editPost = async (req, res, next) => {
   try {
     const postId = req.params.postId;
@@ -60,21 +74,21 @@ exports.editPost = async (req, res, next) => {
     post.image = post.image
     post.save();
     res.status(200).json(post);
-  } catch(error) {
+  } catch (error) {
     res.status(500)
     console.log(error);
   };
 };
-  
+
 exports.deletePost = async (req, res, next) => {
   try {
     const userId = res.userId;
     const postId = req.params.postId;
-    const post = await Post.findOneAndDelete({ 
-      user: userId, 
+    const post = await Post.findOneAndDelete({
+      user: userId,
       _id: postId
     });
-    if(post) {
+    if (post) {
       res.status(200).json(post);
       // io.init();
       // io.getIo().emit('posts', {
@@ -85,7 +99,7 @@ exports.deletePost = async (req, res, next) => {
       res.status(403).json();
     };
     next();
-  } catch(error) {
+  } catch (error) {
     res.status(500).json(error)
   }
 };
