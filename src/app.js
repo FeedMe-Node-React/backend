@@ -37,7 +37,7 @@ MongoConnect();
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'dist/images');
+        cb(null, 'src/images');
     },
     filename: (req, file, cb) => {
         // cb(null, new Date().toISOString() + '-' + file.originalname);
@@ -61,7 +61,7 @@ app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
     
-app.use('/dist/images', express.static(path.join(__dirname, 'images')));
+app.use('/src/images', express.static(path.join(__dirname, 'images')));
     
 app.use(bodyParser.json());
 
