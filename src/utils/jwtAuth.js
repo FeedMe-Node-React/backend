@@ -23,7 +23,6 @@ module.exports = (req, res, next) => {
         error.statusCode = 401;
         throw error;
     }
-    res.header('Access-Control-Allow-Origin', '*');
     res.userId = decodedToken.userId;
     next();
 };
