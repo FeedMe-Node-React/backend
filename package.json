@@ -6,12 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "development": "nodemon src/app.js",
-    "start": "node src/app.js"
+    "build": "babel src --out-dir dist",
+    "start": "yarn build && node dist/app.js"
   },
   "repository": "https://github.com/FeedMe-Node-React/backend",
   "author": "Phil DeLong <philjdelong@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.1",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "dotenv": "^8.2.0",
