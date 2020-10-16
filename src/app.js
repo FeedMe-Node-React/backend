@@ -12,13 +12,6 @@ import socket from './utils/openSocket';
 dotenv.config();
 const app = express();
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    next();
-});
-
 const initialize = async (server) => {
     try {
         await mongoose.connect(process.env.MONGODB_URI, {
@@ -57,6 +50,13 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 };
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    next();
+});
 
 app.use(bodyParser.json());
 
