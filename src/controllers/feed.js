@@ -1,15 +1,15 @@
 import Post from '../models/post';
-import io from '../utils/openSocket';
+// import io from '../utils/openSocket';
 
 exports.getPosts = async (req, res, next) => {
   try {
     const posts = await Post.find().sort({createdAt: -1});
-    io.init();
-    io.getIo().emit('posts', {
-      action: 'index',
-      posts: posts
-    });
-    res.status(200).json(posts); 
+    res.status(200).json(posts);
+    // io.init();
+    // io.getIo().emit('posts', {
+    //   action: 'index',
+    //   posts: posts
+    // });
   } catch(error) {
     res.status(500);
     console.log(error);
@@ -28,12 +28,12 @@ exports.createPost = async (req, res, next) => {
       image: image,
       user: userId,
     });
-    io.init();
-    io.getIo().emit('posts', {
-      action: 'create',
-      post: post
-    });
     res.status(201).json(post);
+    // io.init();
+    // io.getIo().emit('posts', {
+    //   action: 'create',
+    //   post: post
+    // });
   } catch(error) {
     res.status(500);
     console.log(error);
@@ -75,12 +75,12 @@ exports.deletePost = async (req, res, next) => {
       _id: postId
     });
     if(post) {
-      io.init();
-      io.getIo().emit('posts', {
-        action: 'delete',
-        post: post
-      });
       res.status(200).json(post);
+      // io.init();
+      // io.getIo().emit('posts', {
+      //   action: 'delete',
+      //   post: post
+      // });
     } else {
       res.status(403).json();
     };

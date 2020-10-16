@@ -11,7 +11,10 @@ const app = express();
 import feedRoutes from './routes/feed';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
-// require('./utils/dbConnect');
+
+// import io from './utils/openSocket';
+// import './utils/dbConnect';
+// import './utils/imageUploader';
 
 const MongoConnect = async (error) => {
     try {
@@ -20,11 +23,12 @@ const MongoConnect = async (error) => {
             useNewUrlParser: true, 
             useCreateIndex: true 
         });
-        const server = app.listen(8080 || process.env.HEROKU_URI);
-        import io from ('./utils/openSocket').init(server);
-        io.on('connection', socket => {
-            
-        })
+        // const server = app.listen(8080 || process.env.HEROKU_URI);
+        // io.init(server);
+        // io.on('connection', socket => {
+            // console.log('DB Connected')
+        // })
+        console.log('DB Connected')
     } catch (error) {
         console.log(error);
     }
@@ -33,10 +37,11 @@ MongoConnect();
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'src/images');
+        cb(null, 'dist/images');
     },
     filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + '-' + file.originalname);
+        // cb(null, new Date().toISOString() + '-' + file.originalname);
+        cb(null, file.originalname);
     }
 });
 
@@ -56,7 +61,7 @@ app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
     
-app.use('/src/images', express.static(path.join(__dirname, 'images')));
+app.use('/dist/images', express.static(path.join(__dirname, 'images')));
     
 app.use(bodyParser.json());
 
@@ -73,3 +78,5 @@ app.use((req, res, next) => {
 app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+
+app.listen(8080);
