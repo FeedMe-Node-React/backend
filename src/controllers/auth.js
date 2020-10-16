@@ -1,16 +1,16 @@
-// const bcrypt = require('bcryptjs')
-import jwt from 'jsonwebtoken'
-import User from '../models/user'
+import User from '../models/user';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 exports.userSignup = async (req, res, next) => {
     try{
         const email = req.body.email;
-        const password = req.body.password;
+        const password = bcrypt.hashSync(req.body.password);
         const name = req.body.name;
         const user = await new User({
             email: email,
             password: password,
-            name: name
+            name: name,
         });
         user.save();
         console.log(user);
@@ -23,9 +23,9 @@ exports.userSignup = async (req, res, next) => {
 exports.userLogin = async (req, res, next) => {
     try {    
         const email = req.body.email;
-        const password = req.body.password;
         const user = await User.findOne({email})
-        if(user.password === password) {
+        const access = await bcrypt.compare(req.body.password, user.password);
+        if(access) {
             res.status(201).json({
                 data: user._id,
                 token: jwt.sign(
