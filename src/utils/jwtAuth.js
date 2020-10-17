@@ -14,7 +14,6 @@ module.exports = (req, res, next) => {
     let decodedToken;
     try {
         decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-        res.setHeader('Access-Control-Allow-Origin', '*');
     } catch(err) {
         err.statusCode = 500;
         throw err;
@@ -25,5 +24,6 @@ module.exports = (req, res, next) => {
         throw error;
     }
     res.userId = decodedToken.userId;
+    res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 };
