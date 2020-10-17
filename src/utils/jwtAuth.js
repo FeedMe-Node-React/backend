@@ -24,6 +24,5 @@ module.exports = (req, res, next) => {
         throw error;
     }
     res.userId = decodedToken.userId;
-    res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 };
