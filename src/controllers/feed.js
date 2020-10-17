@@ -4,13 +4,8 @@ import socket from '../utils/openSocket';
 exports.getPosts = async (req, res, next) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
+    
     res.status(200).json(posts);
-
-    // io.emit('posts', {
-    //   action: 'index',
-    //   posts: posts
-    // });
-
   } catch (error) {
     res.status(500);
     console.log(error);
@@ -88,13 +83,13 @@ exports.deletePost = async (req, res, next) => {
       user: userId,
       _id: postId
     });
+    const io = socket.getIo();
     if (post) {
+      io.emit('posts', {
+        action: 'delete',
+        post: post
+      });
       res.status(200).json(post);
-      // io.init();
-      // io.getIo().emit('posts', {
-      //   action: 'delete',
-      //   post: post
-      // });
     } else {
       res.status(403).json();
     };

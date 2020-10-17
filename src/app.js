@@ -4,6 +4,7 @@ import path from 'path'
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import feedRoutes from './routes/feed';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
@@ -11,15 +12,6 @@ import socket from './utils/openSocket';
 
 dotenv.config();
 const app = express();
-
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    next();
-});
-
-app.use(bodyParser.json());
 
 const initialize = async (server) => {
     try {
@@ -59,6 +51,16 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 };
+
+app.use(cors());
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+//     next();
+// });
+
+app.use(bodyParser.json());
 
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('/dist/images', express.static(path.join(__dirname, 'images')));

@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon dist/app.js",
     "build": "babel src --out-dir dist",
+    "dev": "yarn build && nodemon dist/app.js",
     "start": "yarn build && node dist/app.js"
   },
   "repository": "https://github.com/FeedMe-Node-React/backend",
@@ -19,6 +19,7 @@
     "@babel/preset-env": "^7.12.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.5.1",
