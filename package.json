@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon dist/app.js",
     "build": "babel src --out-dir dist",
+    "dev": "yarn build && nodemon dist/app.js",
     "start": "yarn build && node dist/app.js"
   },
   "repository": "https://github.com/FeedMe-Node-React/backend",
