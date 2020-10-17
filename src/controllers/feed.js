@@ -79,8 +79,7 @@ exports.deletePost = async (req, res, next) => {
   try {
     const userId = res.userId;
     const postId = req.params.postId;
-    let post
-    post = await Post.findOneAndDelete({
+    const post = await Post.findOneAndDelete({
       user: userId,
       _id: postId
     });
