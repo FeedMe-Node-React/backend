@@ -21,7 +21,7 @@ const initialize = async (server) => {
         });
         console.log('Mongo Connected')
 
-        const io = socket.init(server);
+        const io = await socket.init(server);
         io.on('connection', socket => {
             console.log('Client Connected')
         })
@@ -67,6 +67,7 @@ app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 
-const server = app.listen(process.env.PORT || 8080);
+const port = process.env.PORT || 8080
+const server = app.listen(port);
 
 initialize(server);
