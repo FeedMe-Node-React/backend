@@ -4,6 +4,7 @@ dotenv.config();
 import jwt from 'jsonwebtoken';
 
 module.exports = (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const authHeader = req.get('Authorization')
     if (!authHeader) {
         const error = new Error('Not Authenticated.');
