@@ -13,7 +13,6 @@ dotenv.config();
 const app = express();
 
 const port = process.env.PORT || 8080
-console.log(process.env.PORT)
 const server = app.listen(port);
 
 const initialize = async (server) => {
