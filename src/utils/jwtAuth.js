@@ -24,6 +24,7 @@ module.exports = (req, res, next) => {
         error.statusCode = 401;
         throw error;
     }
+    res.setHeader('Allow-Control-Allow-Origin', '*');
     res.userId = decodedToken.userId;
     next();
 };
