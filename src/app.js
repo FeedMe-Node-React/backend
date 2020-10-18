@@ -12,6 +12,10 @@ import socket from './utils/openSocket';
 dotenv.config();
 const app = express();
 
+const port = process.env.PORT || 8080
+console.log(process.env.PORT)
+const server = app.listen(port);
+
 const initialize = async (server) => {
     try {
         await mongoose.connect(process.env.MONGODB_URI, {
@@ -66,8 +70,5 @@ app.use('/dist/images', express.static(path.join(__dirname, 'images')));
 app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
-
-const port = process.env.PORT || 8080
-const server = app.listen(port);
 
 initialize(server);
