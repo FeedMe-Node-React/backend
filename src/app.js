@@ -9,6 +9,7 @@ import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import socket from './utils/openSocket';
 import helmet from 'helmet';
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
@@ -63,9 +64,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     next();
 });
-
-app.use(bodyParser.json());
 app.use(helmet());
+app.use(cors());
+app.use(bodyParser.json());
 
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('/dist/images', express.static(path.join(__dirname, 'images')));
