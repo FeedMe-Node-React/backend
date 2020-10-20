@@ -73,7 +73,7 @@ exports.editPost = async (req, res, next) => {
     };
     post.title = req.body.title;
     post.content = req.body.content;
-    post.image = postImage;
+    post.image = postImage();
     post.save();
     res.status(200).json(post);
   } catch (error) {
