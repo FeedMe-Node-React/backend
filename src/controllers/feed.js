@@ -67,7 +67,7 @@ exports.editPost = async (req, res, next) => {
     const post = await Post.findByIdAndUpdate(postId)
     post.title = req.body.title;
     post.content = req.body.content;
-    post.image = req.body.image || post.image;
+    post.image = req.file.path || post.image;
     post.save();
     res.status(200).json(post);
   } catch (error) {
