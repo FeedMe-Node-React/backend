@@ -1,3 +1,4 @@
+import image from '../../../frontend/src/components/Image/Image';
 import Post from '../models/post';
 import socket from '../utils/openSocket';
 
@@ -67,7 +68,12 @@ exports.editPost = async (req, res, next) => {
     const post = await Post.findByIdAndUpdate(postId)
     post.title = req.body.title;
     post.content = req.body.content;
-    post.image = req.file.path || post.image;
+    post.image = () => {
+      if(!req.file.path) {
+        post.image;
+      }
+      req.file.path;
+    } ;
     post.save();
     res.status(200).json(post);
   } catch (error) {
