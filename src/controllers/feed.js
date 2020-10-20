@@ -65,7 +65,7 @@ exports.editPost = async (req, res, next) => {
   const postImage = () => {
     if(!req.file.path) {
       post.image;
-    }
+    } else {
     req.file.path;
   };
   try {
