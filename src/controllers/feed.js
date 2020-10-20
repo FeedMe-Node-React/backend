@@ -62,15 +62,15 @@ exports.getPost = async (req, res, next) => {
 };
 
 exports.editPost = async (req, res, next) => {
-  const postImage = () => {
-    if(!req.file.path) {
-      post.image;
-    } else {
-    req.file.path;
-  };
   try {
     const postId = req.params.postId;
     const post = await Post.findByIdAndUpdate(postId)
+    const postImage = () => {
+      if(!req.file.path) {
+        post.image;
+      } else {
+      req.file.path;
+    };
     post.title = req.body.title;
     post.content = req.body.content;
     post.image = postImage;
