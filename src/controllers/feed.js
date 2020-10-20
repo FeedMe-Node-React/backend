@@ -69,8 +69,9 @@ exports.editPost = async (req, res, next) => {
       if(!req.file.path) {
         post.image;
       } else {
-      req.file.path;
-    };
+        req.file.path;
+      }
+    }
     post.title = req.body.title;
     post.content = req.body.content;
     post.image = postImage();
