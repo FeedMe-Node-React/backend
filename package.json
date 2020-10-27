@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir dist && cp -R src/images/* dist/images",
+    "build": "babel src --out-dir dist",
     "dev": "nodemon --exec npx babel-node src/app.js",
     "start": "node dist/app.js",
     "postinstall": "rm -rf dist && yarn run build"
