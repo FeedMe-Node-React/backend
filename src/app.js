@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import feedRoutes from './routes/feed';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
+import imageRoutes from './routes/image';
 import socket from './utils/openSocket';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -74,5 +75,6 @@ app.use('/dist/images', express.static(path.join(__dirname, 'images')));
 app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+app.use('/image', imageRoutes);
 
 initialize(server);

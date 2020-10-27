@@ -1,5 +1,4 @@
 import path from 'path';
-
 import 'dotenv/config';
 import S3 from 'aws-sdk/clients/s3';
 import { v4 as uuid } from 'uuid';
@@ -10,13 +9,14 @@ const s3 = (file, accessKey = process.env.AWS_ACCESS_KEY, accessSecret = process
 		secretAccessKey: accessSecret,
 		signatureVersion: 'v4',
 	});
+	console.log(aws)
 
 	const name = `${uuid()}${path.extname(file)}`;
 
 	const url = aws.getSignedUrl('putObject', {
 		Metadata: {
 			fileName: name,
-			uploadDateUTC: new Date(),
+			uploadDateUTC: new Date().toString(),
 		},
 		Bucket: process.env.AWS_S3_BUCKET,
 		Key: `public/${name}`,
