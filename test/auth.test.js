@@ -1,7 +1,7 @@
 const User = require('../src/models/user')
 const bcrypt = require('bcryptjs')
 
-const email = 'test@email.com'
+const email = 'test@email.com';
 const password = bcrypt.hashSync('password');
 const name = 'Test User';
 
