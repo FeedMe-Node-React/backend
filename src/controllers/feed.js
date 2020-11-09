@@ -26,7 +26,7 @@ exports.createPost = async (req, res, next) => {
       path: image
     } = file
 
-    const post = Post.create({
+    const post = await Post.create({
       title,
       content,
       image,
