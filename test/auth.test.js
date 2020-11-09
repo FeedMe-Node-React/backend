@@ -6,25 +6,32 @@ const password = bcrypt.hashSync('password');
 const name = 'Test User';
 
 test('Users can Register', async () => {
-    const user = await new User({
-        email: email,
-        password: password,
-        name: name,
-    });
-    if(!user.save()) {
-        throw new Error('User was not saved!');
-    };
+    try {
+        const user = await new User({
+            email: email,
+            password: password,
+            name: name,
+        });
+        expect(user.name).toBe(name)
+    } catch (error) {
+        if(!user.save()) {
+            throw error;
+        }
+    }
 });
 
 test('Users can Login', async () => {
-    const user = await new User({
-        email: email,
-        password: password,
-        name: name,
-    });
-    user.save();
-
-    if(!User.findOne(user._id)) {
-        throw new Error('User not found!')
+    try {
+        const user = await new User({
+            email: email,
+            password: password,
+            name: name,
+        });
+        user.save();
+        const testUser = user
+        // const testUser = await User.findOne({email})
+        expect(testUser.name).toBe(name)
+    } catch (error) {
+        throw error;
     };
 });
