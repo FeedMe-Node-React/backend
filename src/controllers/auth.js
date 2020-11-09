@@ -24,7 +24,7 @@ exports.userLogin = async (req, res, next) => {
     try {    
         const email = req.body.email;
         const user = await User.findOne({email})
-        const access = await bcrypt.compare(req.body.password, user.password);
+        const access = bcrypt.compare(req.body.password, user.password);
         if(access) {
             res.status(200).json({
                 data: user._id,
