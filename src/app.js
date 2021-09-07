@@ -10,6 +10,8 @@ import userRoutes from './routes/user';
 import socket from './utils/openSocket';
 import helmet from 'helmet';
 import cors from 'cors';
+// import aws from 'aws-sdk';
+// import multerS3 from 'multer-s3';
 
 dotenv.config();
 const app = express();
@@ -37,6 +39,16 @@ const initialize = async (server) => {
     }
 };
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    next();
+});
+app.use(helmet());
+app.use(cors());
+app.use(bodyParser.json());
+
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'dist/images');
@@ -58,15 +70,26 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    next();
-});
-app.use(helmet());
-app.use(cors());
-app.use(bodyParser.json());
+// const s3 = new aws.S3();
+
+// aws.config.update({
+//     secretAccessKey: process.env.AWS_SECRET_KEY,
+//     accessKeyId: process.env.AWS_ACCESS_KEY,
+//     region: 'us-east-2'
+// });
+
+// const fileStorage = multer({
+//     fileFilter,
+//     storage: multerS3({
+//         acl: 'public-read',
+//         s3,
+//         bucket: process.env.AWS_S3_BUCKET,
+//         key: function (req, file, cb) {
+//             console.log(file);
+//             cb(null, Date().now() + '-' + file.originalname);
+//         }
+//     })
+// });
 
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('/dist/images', express.static(path.join(__dirname, 'images')));
