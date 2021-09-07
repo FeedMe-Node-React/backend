@@ -1,9 +1,6 @@
 import User from '../models/user';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import cors from 'cors';
-
-app.use(cors());
 
 exports.userSignup = async (req, res, next) => {
     try{
